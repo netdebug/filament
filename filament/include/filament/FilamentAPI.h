@@ -45,11 +45,14 @@ public:
     // allow placement-new allocation, don't use "noexcept", to avoid compiler null check
     static void *operator new     (size_t, void* p) { return p; }
 
-    // prevent heap allocation
+    // Prevent heap allocation. We make an exception for emscripten only to appease the requirements
+    // imposed by embind.
+#if !defined(__EMSCRIPTEN__)
     static void *operator new     (size_t) = delete;
     static void *operator new[]   (size_t) = delete;
     static void  operator delete  (void*)  = delete;
     static void  operator delete[](void*)  = delete;
+#endif
 };
 
 

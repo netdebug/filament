@@ -26,6 +26,8 @@
 #include <utils/compiler.h>
 #include <utils/EntityManager.h>
 
+namespace emscripten { namespace internal { template <typename T> void raw_destructor(T* ); } }
+
 namespace filament {
 
 class Camera;
@@ -337,7 +339,7 @@ public:
 
    /**
      * Invokes one iteration of the render loop, used only on single-threaded platforms.
-     * 
+     *
      * This should be called every time the windowing system needs to paint (e.g. at 60 Hz).
      */
     void execute();
@@ -355,6 +357,8 @@ public:
     Engine(Engine&&) = delete;
     Engine& operator=(Engine const&) = delete;
     Engine& operator=(Engine&&) = delete;
+
+    template <typename T> friend void emscripten::internal::raw_destructor(T*);
 };
 
 } // namespace filament

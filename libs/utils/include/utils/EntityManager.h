@@ -22,6 +22,8 @@
 
 #include <utils/Entity.h>
 
+namespace emscripten { namespace internal { template <typename T> void raw_destructor(T* ); } }
+
 namespace utils {
 
 class EntityManager {
@@ -95,6 +97,8 @@ public:
 
 private:
     friend class EntityManagerImpl;
+    template <typename T> friend void emscripten::internal::raw_destructor(T*);
+
     EntityManager();
     ~EntityManager();
 
